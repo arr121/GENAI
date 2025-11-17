@@ -1,68 +1,75 @@
-Retrieval Augmented Generation (RAG) with Azure
-A Retrieval Augmented Generation example with Azure, using Azure OpenAI Service, Azure Cognitive Search, embeddings, and a sample CSV file to produce a powerful grounding to applications that want to deliver customized generative AI applications.
+# GENAI - OpenAI Learning Project
 
-Install the prerequisites
-Use the requirements.txt to install all dependencies
+A comprehensive learning project designed to explore and understand OpenAI's API capabilities through practical implementation. This Python application demonstrates the integration of multiple OpenAI models (GPT and DALL-E) in a real-world scenario by creating an intelligent cooking assistant that generates recipes with shopping lists and visual representations of ingredients.
 
-python -m venv .venv
-./.venv/bin/pip install -r requirements.txt
-Add your keys
-Find the Azure OpenAI Keys in the Azure OpenAI Service. Note, that keys aren't in the studio, but in the resource itself. Add them to a local .env file. This repository ignores the .env file to prevent you (and me) from adding these keys by mistake.
+## 🎯 Learning Objectives
 
-Your .env file should look like this:
+This project serves as a hands-on tutorial for:
+- **OpenAI API Integration**: Learn how to authenticate and interact with OpenAI's services
+- **GPT Model Usage**: Understand prompt engineering and text generation capabilities
+- **DALL-E Implementation**: Explore AI image generation and visual content creation
+- **API Response Handling**: Master parsing and processing AI-generated content
+- **Multi-Model Workflows**: Combine different AI models for complex applications
+- **Environment Management**: Best practices for API key security and configuration
 
-# Azure OpenAI
-OPENAI_API_TYPE="azure"
-OPENAI_API_BASE="https://demo-alfredo-openai.openai.azure.com/"
-OPENAI_API_KEY="0asd8924yl87asljhsd823lkjahsdf234"
-OPENAI_API_VERSION="2023-07-01-preview"
+Cooking Receipe.py:  This application leverages OpenAI's GPT and DALL-E models to generate cooking recipes with shopping lists and visual representations of ingredients.
 
-# Azure Cognitive Search
-SEARCH_SERVICE_NAME="https://demo-alfredo.search.windows.net"
-SEARCH_API_KEY="zlkjhasd876lkjh234978sg098srtiuy"
-SEARCH_INDEX_NAME="demo-index"
-Note that the Azure Cognitive Search is only needed if you are following the Retrieval Augmented Guidance (RAG) demo. It isn't required for a simple Chat application.
 
-Generate a PAT
-The access token will need to be added as an Action secret. Create one with enough permissions to write to packages. It is needed because Azure will need to authenticate against the GitHub Container Registry to pull the image.
+## 📁 Project Structure
 
-Create an Azure Service Principal
-You'll need the following:
+```
+GENAI/
+├── README.md
+├── DALL-E/
+│   └── Cooking_Receipe.py    # Main application file
+└── Examples/
+    ├── Embedding.ipynb
+    ├── Execution_File.py
+    ├── parsed_logs_1.csv
+    └── top_rated_wines.csv
+```
 
-An Azure subscription ID find it here or follow this guide
-A Service Principal with the following details the AppID, password, and tenant information. Create one with: az ad sp create-for-rbac -n "REST API Service Principal" and assign the IAM role for the subscription. Alternatively set the proper role access using the following command (use a real subscription id and replace it):
-az ad sp create-for-rbac --name "CICD" --role contributor --scopes /subscriptions/$AZURE_SUBSCRIPTION_ID --sdk-auth
-Azure Container Apps
-Make sure you have one instance already created, and then capture the name and resource group. These will be used in the workflow file.
+## 🔧 Prerequisites
 
-Change defaults
-Make sure you use 2 CPU cores and 4GB of memory per container. Otherwise you may get an error because loading HuggingFace with FastAPI requires significant memory upfront.
+- Python 3.7+
+- OpenAI API key
+- Required Python packages (see Installation section)
 
-Gotchas
-There are a few things that might get you into a failed state when deploying:
+## 📦 Installation
 
-Not having enough RAM per container
-Not using authentication for accessing the remote registry (ghcr.io in this case). Authentication is always required
-Not using a GITHUB_TOKEN or not setting the write permissions for "packages". Go to settings/actions and make sure that "Read and write permissions" is set for "Workflow permissions" section
-Different port than 80 in the container. By default Azure Container Apps use 80. Update to match the container.
-If running into trouble, check logs in the portal or use the following with the Azure CLI:
+1. **Clone the repository**:
+   ```bash
+   git clone <repository-url>
+   cd GENAI
+   ```
 
-az containerapp logs  show  --name $CONTAINER_APP_NAME --resource-group $RESOURCE_GROUP_NAME --follow
-Update both variables to match your environment
+2. **Set up virtual environment** (recommended):
+   ```bash
+   python -m venv .venv
+   source .venv/bin/activate  # On Windows: .venv\Scripts\activate
+   ```
 
-API Best Practices
-Although there are a few best practices for using the FastAPI framework, there are many different other suggestions to build solid HTTP APIs that can be applicable anywhere.
+3. **Install required packages**:
+   ```bash
+   pip install openai python-dotenv regex
+   ```
 
-Use HTTP Error codes
-The HTTP specification has several error codes available. Make use of the appropriate error code to match the condition that caused it. For example the 401 HTTP code can be used when access is unauthorized. You shouldn't use a single error code as a catch-all error.
+4. **Configure environment variables**:
+   Create a `.env` file in the root directory:
+   ```env
+   OPENAI_API_KEY=your_openai_api_key_here
+   ```
 
-Here are some common scenarios associated with HTTP error codes:
+## 🚀 How to Execute
 
-400 Bad request: Use this to indicate a schema problem. For example if the server expected a string but got an integer
-401 Unauthorized: When authentication is required and it wasn't present or satisfied
-404 Not found: When the resource doesn't exist
-Note that it is a good practice to use 404 Not Found to protect from requests that try to find if a resource exists without being authenticated. A good example of this is a service that doesn't want to expose usernames unless you are authenticated.
+### Running the Cooking Recipe Generator
 
-Accept request types sparingly
-GET	POST	PUT	HEAD
-Read Only	Write Only	Update existing	Does it exist?
+1. **Navigate to the project directory**:
+   ```bash
+   cd /workspaces/GENAI
+   ```
+
+2. **Execute the main script**:
+   ```bash
+   python DALL-E/Cooking_Receipe.py
+   ```
