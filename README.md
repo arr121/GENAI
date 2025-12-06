@@ -21,13 +21,14 @@ Cooking Receipe.py:  This application leverages OpenAI's GPT and DALL-E models t
 GENAI/
 ├── README.md
 ├── DALL-E/
-│   └── Cooking_Receipe.py    # Main application file
+│   └── Cooking_Receipe.py    #Sample Python project created to retrieve the cooking receipe and images of imgredients to prepare the Cusine  
 └── Examples/
     ├── Embedding.ipynb
     ├── Execution_File.py
     ├── parsed_logs_1.csv
     └── top_rated_wines.csv
-```
+├── Semantic_Kernel/
+│   └── Semantic_Kernel.py    # Semantic Kernel is SDK Api
 
 ## 🔧 Prerequisites
 
